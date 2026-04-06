@@ -32,7 +32,7 @@ A simple and stylish digital calculator built using HTML, CSS, and JavaScript.
 ## 📂 Project Structure
 
 calculator/
-│── index.html
+│── calculator_sample.html
 
 
 ## ▶️ How to Run
@@ -43,11 +43,7 @@ calculator/
 
 ---
 
-## 🌐 Live Demo
 
-(Enable GitHub Pages and add your link here)
-
-Example:
  https://sruthibaskaran07-eng.github.io/Calculator/
 
 ---
