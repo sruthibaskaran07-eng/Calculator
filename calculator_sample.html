@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Calculator</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+        }
+
+        /* Calculator Container */
+        .calculator {
+            background-color: #22252d;
+            width: 100%;
+            max-width: 340px;
+            border-radius: 24px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        /* Display Screen */
+        .display-container {
+            background-color: #292d36;
+            padding: 40px 24px 20px 24px;
+            text-align: right;
+        }
+
+        .display {
+            color: #ffffff;
+            font-size: 3rem;
+            font-weight: 600;
+            word-wrap: break-word;
+            min-height: 70px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            overflow: hidden;
+        }
+
+        /* Keypad Grid */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 24px;
+            background-color: #22252d;
+        }
+
+        /* Buttons */
+        button {
+            border: none;
+            outline: none;
+            background-color: #292d36;
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 500;
+            padding: 20px 0;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #383e4a;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* Specific Button Colors & Spans */
+        .operator {
+            color: #26e07f;
+            background-color: #2d3436;
+        }
+
+        .clear {
+            grid-column: span 3; /* Spans across 3 columns */
+            background-color: #ff4757;
+            color: white;
+            font-weight: bold;
+        }
+
+        .clear:hover {
+            background-color: #ff6b81;
+        }
+
+        .zero {
+            grid-column: span 2; /* Spans across 2 columns */
+        }
+
+        .equal {
+            background-color: #26e07f;
+            color: #22252d;
+            font-weight: bold;
+        }
+
+        .equal:hover {
+            background-color: #2ced88;
+        }
+
+        /* Responsive adjustment for small mobile screens */
+        @media (max-width: 400px) {
+            .calculator {
+                border-radius: 0;
+                height: 100vh;
+                max-width: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            .display-container {
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+            }
+            .keypad {
+                padding-bottom: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <!-- Display -->
+        <div class="display-container">
+            <div class="display" id="display">0</div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="keypad">
+            <!-- Row 1 -->
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="appendValue('/')">&divide;</button>
+            
+            <!-- Row 2 -->
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button class="operator" onclick="appendValue('*')">&times;</button>
+            
+            <!-- Row 3 -->
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button class="operator" onclick="appendValue('-')">&minus;</button>
+            
+            <!-- Row 4 -->
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button class="operator" onclick="appendValue('+')">+</button>
+            
+            <!-- Row 5 -->
+            <button class="zero" onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+            <button class="equal" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+
+        // Append numbers and operators to the screen
+        function appendValue(value) {
+            // Prevent multiple decimal points
+            if (value === '.' && display.innerText.includes('.')) return;
+            
+            // Remove initial '0' before typing numbers, except if typing a decimal
+            if (display.innerText === '0' && value !== '.') {
+                display.innerText = value;
+            } else {
+                display.innerText += value;
+            }
+        }
+
+        // Clear the screen back to '0'
+        function clearDisplay() {
+            display.innerText = '0';
+        }
+
+        // Calculate the result
+        function calculate() {
+            try {
+                // Using eval() evaluates the string equation
+                let result = eval(display.innerText);
+                
+                // Deal with JS float decimal issues (e.g. 0.1 + 0.2)
+                if (result % 1 !== 0) {
+                    result = parseFloat(result.toFixed(8)); // Rounds to 8 decimal places
+                }
+                
+                display.innerText = result;
+            } catch (error) {
+                // Catches syntax errors (e.g., 5++5)
+                display.innerText = 'Error';
+                setTimeout(clearDisplay, 1500); // Clears the error after 1.5 seconds
+            }
+        }
+    </script>
+</body>
+</html>
