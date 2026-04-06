@@ -48,7 +48,7 @@ calculator/
 (Enable GitHub Pages and add your link here)
 
 Example:
-https://your-username.github.io/calculator/
+ https://sruthibaskaran07-eng.github.io/Calculator/
 
 ---
 
